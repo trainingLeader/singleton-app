@@ -6,28 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class Loadconfigutil {
-    private static volatile Loadconfigutil instancia;
-    private final Map<String, String> configuraciones ;
-    
-    private Loadconfigutil() {
-        configuraciones = new HashMap<>();
+public enum Singletonenum {
+    INSTANCIA; // Singleton
+    private final Map<String, String> configuraciones = new HashMap<>();
+
+    public void getInstance() {
         cargarConfiguraciones("config.properties");
-
     }
-        // Método para obtener la instancia única con Double-Checked Locking
-    public static Loadconfigutil getInstancia() {
-        if (instancia == null) {
-            synchronized (Loadconfigutil.class) {
-                if (instancia == null) {
-                    instancia = new Loadconfigutil();
-                }
-            }
-        }
-        return instancia;
-    }
-
-    // Método para cargar configuraciones desde un archivo
+        // Método para cargar configuraciones desde un archivo
     private void cargarConfiguraciones(String rutaArchivo) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         try (FileInputStream archivo = new FileInputStream(classLoader.getResource(rutaArchivo).getFile())) {
